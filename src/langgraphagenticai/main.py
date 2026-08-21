@@ -20,6 +20,8 @@ def load_langgraph_agenticai_app():
         return
 
     user_message=st.chat_input("Enter your message: ")
+    if not user_message:
+        return
 
     try:
         obj_llm_conig=GroqLLM(user_controls_input=user_input)

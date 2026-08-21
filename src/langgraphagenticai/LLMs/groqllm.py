@@ -1,6 +1,9 @@
 import os
 import streamlit as st
 from langchain_groq import ChatGroq
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class GroqLLM:
     def __init__(self,user_controls_input):
@@ -8,10 +11,10 @@ class GroqLLM:
 
     def get_llm_model(self):
         try:
-            groq_api_key=self.user_controls_input['GROQ_API_KEY']
+            groq_api_key=self.user_controls_input.get('GROQ_API_KEY') or os.getenv('GROQ_API_KEY')
             selected_groq_model=self.user_controls_input['selected_groq_model']
-            if groq_api_key=="" and os.environ["GROQ_API_KEY"]=="":
-                st.error("PLease Enter the GROQ API KEY")
+            if not groq_api_key:
+                raise ValueError("GROQ_API_KEY is missing. Enter it in the sidebar or add it to .env.")
 
             llm=ChatGroq(api_key=groq_api_key,model=selected_groq_model)
 
